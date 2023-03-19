@@ -11,8 +11,11 @@
                     <v-spacer></v-spacer>
                     <v-btn @click="changeObjectValue(index, 'isLiked');
                                     item.isLiked ? item.likes++ : item.likes--;
-                                    store(item)" fab depressed :dark="!item.isLiked"
-                           small color="red accent-2"><v-icon>mdi-heart</v-icon></v-btn>
+                                    store(item)"
+                           fab depressed :dark="!item.isLiked"
+                           :style="!token ? 'pointer-events: none' : ''"
+                           :color="!token ? 'grey' : 'red accent-2'"
+                           small><v-icon>mdi-heart</v-icon></v-btn>
                 </v-card-actions>
             </v-card>
         </v-col>
@@ -26,12 +29,16 @@ import {jsonToFormData} from "../utils";
 export default {
     data: () => ({
         items:[],
-        filter: false
+        filter: false,
+        token: false,
     }),
     mounted() {
         let key = Object.keys(this.$route.query)[0]
+        if (key)
+            this.filter = key + '=' + this.$route.query[key]
+        else this.filter = false
 
-        this.filter = key + '=' + this.$route.query[key]
+        this.token = localStorage.getItem('x_xsrf_token')
 
         this.fetchData()
     },
@@ -39,7 +46,9 @@ export default {
         '$route.query'(query) {
             let key = Object.keys(query)[0]
 
-            this.filter = key + '=' + this.$route.query[key]
+            if (key)
+                this.filter = key + '=' + this.$route.query[key]
+            else this.filter = false
 
             this.fetchData()
         }
@@ -64,7 +73,6 @@ export default {
                     headers: {"Content-Type": "multipart/form-data"},
                 })
                 .then(() => {
-                    this.$toast.success('Сохраненно.')
                     this.fetchData()
                 })
                 .catch((data) => {

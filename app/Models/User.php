@@ -56,4 +56,14 @@ class User extends Authenticatable
     {
         return $this->morphedByMany(Genre::class, 'userable');
     }
+
+    public function getFavouriteAuthorsAttribute()
+    {
+        return $this->authors()->pluck('name')->toArray();
+    }
+
+    public function getFavouriteGenresAttribute()
+    {
+        return $this->genres()->pluck('name')->toArray();
+    }
 }

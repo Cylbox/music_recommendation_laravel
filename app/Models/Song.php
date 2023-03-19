@@ -25,4 +25,14 @@ class Song extends Model
     {
         return $this->morphedByMany(Genre::class, 'songable');
     }
+
+    public function getAuthorAttribute()
+    {
+        return $this->authors()->pluck('name')->implode(', ');
+    }
+
+    public function getGenreAttribute()
+    {
+        return $this->genres()->pluck('name')->implode(', ');
+    }
 }

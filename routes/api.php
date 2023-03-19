@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\Api\AuthorController;
+use App\Http\Controllers\Api\GenreController;
 use App\Http\Controllers\Api\SongController;
+use App\Http\Controllers\Api\UserableController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,9 +22,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::group(['middleware' => 'auth:sanctum'], function (){
-    Route::apiResources([
-        'songs' => SongController::class,
-    ]);
-});
+Route::apiResources([
+    'songs' => SongController::class,
+    'genres' => GenreController::class,
+    'authors' => AuthorController::class,
+]);
 

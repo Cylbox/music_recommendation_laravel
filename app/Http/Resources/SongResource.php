@@ -23,7 +23,7 @@ class SongResource extends JsonResource
             'genre' => $this->genre,
             'likes' => $this->likes,
             'plays' => $this->plays,
-            'isLiked' => $this->users()->where('user_id', Auth::user()->id)->exists(),
+            'isLiked' => $this->users()->where('songable_id', Auth::user()->id ?? null)->exists(),
         ];
     }
 }

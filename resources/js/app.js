@@ -8,8 +8,7 @@ import Vuetify from "./plugins/vuetify";
 import CKEditor from 'ckeditor4-vue';
 Vue.use(CKEditor);
 import VueToast from 'vue-toast-notification';
-//import "materialize-css/dist/css/materialize.min.css";
-//import 'material-design-icons-iconfont/dist/material-design-icons.css'
+
 import '@mdi/font/css/materialdesignicons.css'
 import 'vue-toast-notification/dist/theme-sugar.css';
 

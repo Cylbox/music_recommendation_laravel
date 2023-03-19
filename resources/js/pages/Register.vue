@@ -12,9 +12,43 @@
                     <v-text-field v-model="user.email" label="Email" required></v-text-field>
                     <v-text-field v-model="user.password" label="Пароль" type="password" required></v-text-field>
                     <v-text-field v-model="user.password_confirmation" type="password" label="Підтвердіть пароль" required></v-text-field>
-                    <v-card-actions class="justify-center">
-                        <v-btn type="submit" color="green lighten-2" dark>Зареєструватися</v-btn>
-                    </v-card-actions>
+                    <v-dialog
+                        v-model="dialog"
+                        width="500"
+                    >
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-card-actions class="justify-center">
+                                <v-btn v-bind="attrs"
+                                       v-on="on" color="green lighten-2" dark>Зареєструватися</v-btn>
+                            </v-card-actions>
+                        </template>
+
+                        <v-card>
+                            <v-card-title class="text-h5 grey lighten-2">
+                                Оберіть ваші улюблені жанри:
+                            </v-card-title>
+
+                            <v-card-text>
+                                <v-checkbox  v-for="(genre, index) in genres" :key="index" :value="genre.id"
+                                            v-model="user.genresIds"
+                                            :label="genre.name"
+                                             hide-details
+                                ></v-checkbox>
+                            </v-card-text>
+
+                            <v-divider></v-divider>
+
+                            <v-card-actions class="justify-center">
+                                <v-btn
+                                    type="submit"
+                                    @click="register"
+                                    color="green lighten-2" dark
+                                >
+                                    Завершити регістрацію
+                                </v-btn>
+                            </v-card-actions>
+                        </v-card>
+                    </v-dialog>
                 </v-card>
             </v-col>
         </v-row>
@@ -36,9 +70,17 @@ export default {
             email: '',
             password: '',
             password_confirmation: '',
+            genresIds: [],
         },
         errors_all: [],
+        dialog: false,
+        genres: [],
     }),
+
+    mounted() {
+        this.fetchData()
+    },
+
     methods: {
         register() {
             let form = Object.assign({}, this.user)
@@ -53,7 +95,7 @@ export default {
                         .then((r) => {
                             localStorage.setItem('x_xsrf_token', r.config.headers['X-XSRF-TOKEN'])
                             window.token = r.config.headers['X-XSRF-TOKEN']
-                            this.$toast.success('Сохраненно.')
+                            this.$toast.success('Реєстрація успішна!.')
                             this.$router.push('/home')
                         })
                         .catch((data) => {
@@ -68,6 +110,15 @@ export default {
                                 })
                             }
                         })
+                })
+        },
+        fetchData() {
+            axios.get(`/api/genres`)
+                .then(({data}) => {
+                    this.genres ={
+                        data: {}
+                    }
+                    this.genres = data
                 })
         },
     }

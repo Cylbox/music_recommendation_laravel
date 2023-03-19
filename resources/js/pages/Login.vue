@@ -46,7 +46,7 @@ export default {
                 })
                     .then((r) => {
                         localStorage.setItem('x_xsrf_token', r.config.headers['X-XSRF-TOKEN'])
-                        this.$toast.success('Сохраненно.')
+                        this.$toast.success('Вхід виконано успішно!.')
                         this.$router.push('/home')
                     })
                     .catch((data) => {

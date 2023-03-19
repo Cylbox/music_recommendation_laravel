@@ -30,11 +30,11 @@
                 </v-btn>
             </router-link>
 
-            <router-link to=/author>
+            <router-link :to="{ path: '/home', query: { authors: true } }">
                 <v-btn color="white" plain>Рекомендації за автором</v-btn>
             </router-link>
 
-            <router-link to=/genre>
+            <router-link :to="{ path: '/home', query: { genres: true } }">
                 <v-btn color="white" plain>Рекомендації за жанром</v-btn>
             </router-link>
         </v-app-bar>

@@ -29,10 +29,6 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
     const token = localStorage.getItem('x_xsrf_token')
 
-    // if (token && to.path !== '/logout') {
-    //
-    // }
-
     if ((to.name === 'login' || to.name === 'register') && token) {
         return next({
             name: 'home'
