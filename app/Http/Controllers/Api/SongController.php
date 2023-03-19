@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\SongResource;
 use App\Models\Song;
+use App\Models\UserSong;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SongController extends Controller
 {
@@ -14,9 +16,17 @@ class SongController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return SongResource::collection(Song::query()->with('users')->get()->all());
+        $song = Song::query()->with('users')
+            ->when($request->filled('likes'), function ($q) use ($request) {
+            return $q->whereHas('users', function ($query) {
+                $query->where('user_id', Auth::user()->id);
+            });
+
+        })->get()->all();
+
+        return SongResource::collection($song);
     }
 
     /**
@@ -50,7 +60,19 @@ class SongController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = $request->only(['likes' , 'plays']);
+        $likedState = $request->get('isLiked');
+        $song = Song::query()->findOrFail($id);
+
+        if ($likedState === 'true' && $song->likes < $data['likes']) {
+            UserSong::query()->create([
+                'user_id' => Auth::user()->id,
+                'song_id' => $id,
+            ]);
+        } else if ($likedState === 'false' && $song->likes >= $data['likes']) {
+            UserSong::query()->where('song_id', $id)->delete();
+        }
+        $song->update($data);
     }
 
     /**

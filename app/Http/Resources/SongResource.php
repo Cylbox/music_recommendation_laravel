@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Auth;
 
 class SongResource extends JsonResource
 {
@@ -22,7 +23,7 @@ class SongResource extends JsonResource
             'genre' => $this->genre,
             'likes' => $this->likes,
             'plays' => $this->plays,
-            'users' => $this->users,
+            'isLiked' => $this->users()->where('user_id', Auth::user()->id)->exists(),
         ];
     }
 }

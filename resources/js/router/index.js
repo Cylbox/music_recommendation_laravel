@@ -21,8 +21,25 @@ routes.push({
     redirect: '/home'
 })
 
-export const router = new VueRouter({
+const router = new VueRouter({
     routes,
     mode: "history"
 })
+
+router.beforeEach((to, from, next) => {
+    const token = localStorage.getItem('x_xsrf_token')
+
+    // if (token && to.path !== '/logout') {
+    //
+    // }
+
+    if ((to.name === 'login' || to.name === 'register') && token) {
+        return next({
+            name: 'home'
+        })
+    }
+    return next()
+})
+
+export default router
 

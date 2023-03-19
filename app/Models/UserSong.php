@@ -9,5 +9,7 @@ class UserSong extends Model
 {
     use HasFactory;
 
+    protected $guarded = '';
+
     protected $table = 'user_song';
 }

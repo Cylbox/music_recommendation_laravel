@@ -9,8 +9,20 @@ class Song extends Model
 {
     use HasFactory;
 
-    public function users(): \Illuminate\Database\Eloquent\Relations\HasMany
+    protected $fillable = ['likes', 'plays'];
+
+    public function users(): \Illuminate\Database\Eloquent\Relations\MorphToMany
     {
-        return $this->hasMany(UserSong::class);
+        return $this->morphedByMany(User::class, 'songable');
+    }
+
+    public function authors(): \Illuminate\Database\Eloquent\Relations\MorphToMany
+    {
+        return $this->morphedByMany(Author::class, 'songable');
+    }
+
+    public function genres(): \Illuminate\Database\Eloquent\Relations\MorphToMany
+    {
+        return $this->morphedByMany(Genre::class, 'songable');
     }
 }

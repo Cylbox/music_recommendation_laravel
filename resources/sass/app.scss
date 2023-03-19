@@ -5,4 +5,34 @@
 @import 'variables';
 
 // Bootstrap
-@import '~bootstrap/scss/bootstrap';
+//@import '~bootstrap/scss/bootstrap';
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
+    "Droid Sans", "Helvetica Neue", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+.nav-header {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 6;
+}
+
+.youtube_player {
+    position: -webkit-sticky;
+    position: fixed;
+    height: 240px;
+    width: 426px;
+    right: 0;
+    bottom: 0;
+    z-index: 6;
+}
+
+a { text-decoration: none; }
