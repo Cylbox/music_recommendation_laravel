@@ -89,6 +89,15 @@ class SongController extends Controller
 //            Auth::user()->authors()->detach($song->authors()->pluck('id'));
 //            Auth::user()->genres()->detach($song->genres()->pluck('id'));
         }
+        if ($song->plays < $data['plays']){
+            Songable::query()->create([
+                'song_id' => $id,
+                'songable_id' => Auth::user()->id,
+                'songable_type' => 'App\Models\User',
+            ]);
+            Auth::user()->authors()->syncWithoutDetaching($song->authors()->pluck('id'));
+            Auth::user()->genres()->syncWithoutDetaching($song->genres()->pluck('id'));
+        }
         $song->update($data);
     }
 
