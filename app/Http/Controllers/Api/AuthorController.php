@@ -14,7 +14,7 @@ class AuthorController extends Controller
      */
     public function index()
     {
-        //
+        dd('hello piska');
     }
 
     /**
